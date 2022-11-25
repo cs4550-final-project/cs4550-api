@@ -18,8 +18,22 @@ const productSchema = new mongoose.Schema(
     },
     productType: {
       type: String,
-      enum: ["switch", "keycap", "case"],
+      enum: ["switch", "keycap", "keyboardCase"],
       required: true,
+    },
+    dimensions: {
+      height: {
+        type: Number,
+        required: true,
+      },
+      width: {
+        type: Number,
+        required: true,
+      },
+      weight: {
+        type: Number,
+        required: true,
+      },
     },
     materials: [
       {
@@ -44,6 +58,10 @@ const productSchema = new mongoose.Schema(
       enum: ["active", "draft", "inactive"],
       default: "draft",
     },
+    upc: {
+      type: String,
+    },
+
     usersFavorited: [
       {
         type: mongoose.Schema.Types.ObjectId,
