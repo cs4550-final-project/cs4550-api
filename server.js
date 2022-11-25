@@ -2,7 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-// require configured passport authentication middleware
+// require routes
+const userRoutes = require("./app/routes/user_routes");
+// require auth
 const auth = require("./lib/auth");
 // require database configuration logic
 // `db` will be the actual Mongo URI as a string
@@ -23,7 +25,7 @@ const port = process.env.PORT || 3000;
 // set CORS headers on response from this API using the `cors` NPM package
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:3000" }));
-
+app.use(bodyParser.json());
 // register passport authentication middleware
 app.use(auth);
 
@@ -39,11 +41,11 @@ app.use((req, res, next) => {
   }
   next();
 });
+app.use(userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
