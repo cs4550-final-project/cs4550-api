@@ -13,27 +13,31 @@ const keyboardCaseAttributeSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
-      formFactor: {
-        type: Number,
-        required: true,
-      },
       isWireless: {
         type: Boolean,
         required: true,
+        default: false,
+      },
+      wireLength: {
+        type: Number,
+        default: 0,
       },
     },
     features: {
       hasNumericKeypad: {
         type: Boolean,
         required: true,
+        default: false,
       },
       hasTouchpad: {
         type: Boolean,
         required: true,
+        default: false,
       },
       hasPalmRest: {
         type: Boolean,
         required: true,
+        default: false,
       },
     },
   },

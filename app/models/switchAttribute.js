@@ -8,13 +8,19 @@ const switchAttributeSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    switchType: {
-      type: String,
-      required: true,
-    },
-    packSize: {
-      type: Number,
-      required: true,
+    specs: {
+      switchType: {
+        type: String,
+        required: true,
+      },
+      packSize: {
+        type: Number,
+        required: true,
+      },
+      behavior: {
+        type: String,
+        required: true,
+      },
     },
   },
   {
