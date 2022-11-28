@@ -16,8 +16,8 @@ const requireToken = passport.authenticate("bearer", { session: false });
 const router = express.Router();
 
 // POST /sign-up
+// Sign up and create a user
 router.post("/sign-up", (req, res, next) => {
-  console.log(req.body);
   Promise.resolve(req.body.credentials)
     .then((credentials) => {
       if (
@@ -45,6 +45,7 @@ router.post("/sign-up", (req, res, next) => {
 });
 
 // POST /sign-in
+// sign in
 router.post("/sign-in", (req, res, next) => {
   const pw = req.body.credentials.password;
   let user;
@@ -77,6 +78,7 @@ router.post("/sign-in", (req, res, next) => {
 });
 
 // PATCH /change-password
+// change password
 router.patch("/change-password", requireToken, (req, res, next) => {
   let user;
   // `req.user` will be determined by decoding the token payload
@@ -101,6 +103,8 @@ router.patch("/change-password", requireToken, (req, res, next) => {
     .catch(next);
 });
 
+// DELETE /sign-out
+// Sign out
 router.delete("/sign-out", requireToken, (req, res, next) => {
   // create a new random token for the user, invalidating the current one
   req.user.token = crypto.randomBytes(16);

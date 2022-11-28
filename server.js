@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 // require routes
 const userRoutes = require("./app/routes/user_routes");
+const storeRoutes = require("./app/routes/store_routes");
 // require auth
 const auth = require("./lib/auth");
 // require database configuration logic
@@ -42,10 +43,11 @@ app.use((req, res, next) => {
   next();
 });
 app.use(userRoutes);
+app.use(storeRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Welcome to the api.");
 });
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`app listening on port ${port}`);
 });
