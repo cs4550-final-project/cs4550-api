@@ -1,6 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const Store = require("../models/store");
+const Product = require("../models/product");
 const customErrors = require("../../lib/custom_errors");
 const handle404 = customErrors.handle404;
 const requireOwnership = customErrors.requireOwnership;
@@ -8,27 +9,39 @@ const requireToken = passport.authenticate("bearer", { session: false });
 const router = express.Router();
 
 // GET /store
-// Get current user's store
-router.get("/store", (req, res, next) => {
-  Store.findOne({ ownerId: req.body.ownerId })
+// Get store information
+router.get("/store/:id", (req, res, next) => {
+  const storeId = req.params.id;
+  Store.findById(storeId)
     .then((store) => store.toObject())
     .then((store) => res.json({ store }))
     .catch(next);
 });
 
-// POST /create-store
+// Get the store's products
+router.get("/store/:id/products", (req, res, next) => {
+  const storeId = req.params.id;
+  Product.findById(storeId)
+    .then(handle404)
+    .then((products) => products.map((p) => p.toObject()))
+    .then((products) => res.json({ products }));
+});
+
+// POST /store
 // Create a store
 router.post("/store", requireToken, (req, res, next) => {
-  Store.create(req.body)
+  const payload = { ownerId: req.user._id, ...req.body };
+  Store.create(payload)
     .then((store) => store.toObject())
     .then((store) => res.status(201).json({ store }))
     .catch(next);
 });
 
-// PATCH /update-store
-// Update store
-router.patch("/store", requireToken, (req, res, next) => {
-  Store.findOne({ ownerId: req.body.ownerId })
+// PATCH /store/:id
+// Update store details
+router.patch("/store/:id", requireToken, (req, res, next) => {
+  const storeId = req.params.id;
+  Store.findById(storeId)
     .then(handle404)
     .then((store) => {
       requireOwnership(req, store);
@@ -42,5 +55,8 @@ router.patch("/store", requireToken, (req, res, next) => {
     .then((store) => res.status(204).json({ store }))
     .catch(next);
 });
+
+// PATCH /store/:id
+// deactivate store and all its products
 
 module.exports = router;

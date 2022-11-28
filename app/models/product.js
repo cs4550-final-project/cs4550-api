@@ -6,7 +6,6 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Store",
       required: true,
-      unique: true,
     },
     productName: {
       type: String,
@@ -22,7 +21,7 @@ const productSchema = new mongoose.Schema(
     },
     productType: {
       type: String,
-      enum: ["switch", "keycap", "keyboardCase"],
+      enum: ["switch"],
       required: true,
     },
     dimensions: {
@@ -59,7 +58,7 @@ const productSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["active", "draft", "inactive"],
+      enum: ["active", "inactive"],
       default: "draft",
     },
     upc: {
@@ -71,6 +70,36 @@ const productSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    attributes: {
+      topHousingMaterial: {
+        type: String,
+      },
+      bottomHousingMaterial: {
+        type: String,
+      },
+      stemMaterial: {
+        type: String,
+      },
+      springWeight: {
+        type: Number,
+      },
+      prelubed: {
+        type: Boolean,
+      },
+      switchType: {
+        type: String,
+        enum: ["linear", "tactile", "clicky"],
+      },
+      packSize: {
+        type: Number,
+      },
+      mountingPins: {
+        type: Number,
+      },
+      manufacturer: {
+        type: String,
+      },
+    },
   },
   {
     timestamps: true,
