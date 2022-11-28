@@ -18,7 +18,7 @@ router.get("/store", (req, res, next) => {
 
 // POST /create-store
 // Create a store
-router.post("/create-store", requireToken, (req, res, next) => {
+router.post("/store", requireToken, (req, res, next) => {
   Store.create(req.body)
     .then((store) => store.toObject())
     .then((store) => res.status(201).json({ store }))
@@ -27,7 +27,7 @@ router.post("/create-store", requireToken, (req, res, next) => {
 
 // PATCH /update-store
 // Update store
-router.patch("/update-store", requireToken, (req, res, next) => {
+router.patch("/store", requireToken, (req, res, next) => {
   Store.findOne({ ownerId: req.body.ownerId })
     .then(handle404)
     .then((store) => {
