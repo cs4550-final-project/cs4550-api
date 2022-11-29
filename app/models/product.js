@@ -59,7 +59,7 @@ const productSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["active", "inactive"],
-      default: "draft",
+      default: "active",
     },
     upc: {
       type: String,

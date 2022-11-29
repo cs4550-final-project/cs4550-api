@@ -1,5 +1,5 @@
 "use strict";
-require('dotenv').config();
+require("dotenv").config();
 
 // // creating a base name for the mongodb
 // const mongooseBaseName = "cs4550-api";
@@ -16,6 +16,7 @@ require('dotenv').config();
 
 // Environment variable MONGODB_URI will be available in
 // heroku production evironment otherwise use test or development db
-const currentDb = process.env.MONGODB_URI || `mongodb://localhost/cs4550-api-development`;
+const currentDb =
+  process.env.MONGODB_URI || `mongodb://localhost:27017/cs4550-api-development`;
 
 module.exports = currentDb;

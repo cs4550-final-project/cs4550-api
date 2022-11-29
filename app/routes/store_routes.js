@@ -8,11 +8,20 @@ const requireOwnership = customErrors.requireOwnership;
 const requireToken = passport.authenticate("bearer", { session: false });
 const router = express.Router();
 
+// GET all stores
+router.get("/stores", (req, res, next) => {
+  Store.find()
+    .then(handle404)
+    .then((stores) => stores.map((s) => s.toObject()))
+    .then((stores) => res.json({ stores }));
+});
+
 // GET /store
 // Get store information
 router.get("/store/:id", (req, res, next) => {
   const storeId = req.params.id;
   Store.findById(storeId)
+    .then(handle404)
     .then((store) => store.toObject())
     .then((store) => res.json({ store }))
     .catch(next);

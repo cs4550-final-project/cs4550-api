@@ -2,6 +2,8 @@ const express = require("express");
 const crypto = require("crypto");
 const passport = require("passport");
 const errors = require("../../lib/custom_errors");
+const customErrors = require("../../lib/custom_errors");
+const handle404 = customErrors.handle404;
 
 const bcrypt = require("bcrypt");
 const bcryptSaltRounds = 10;
@@ -14,6 +16,16 @@ const User = require("../models/user");
 const requireToken = passport.authenticate("bearer", { session: false });
 
 const router = express.Router();
+
+// GET /users
+// Get all users
+router.get("/users", (req, res, next) => {
+  User.find()
+    .then(handle404)
+    .then((users) => users.map((u) => u.toObject()))
+    .then((users) => res.json({ users }))
+    .catch(next);
+});
 
 // POST /sign-up
 // Sign up and create a user
