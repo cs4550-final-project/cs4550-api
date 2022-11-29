@@ -63,16 +63,12 @@ router.delete("/products/:id", requireToken, (req, res, next) => {
 // adds a product to current user's favorite
 router.patch("/products/:id/favorite", requireToken, (req, res, next) => {
   const productId = req.params.id;
-  console.log(productId, req.body);
-  Product.findByIdAndUpdate(
-    productId,
-    { $push: { usersFavorited: productId } },
-    { new: true, useFindAndModify: false }
-  )
-    .then(handle404)
+  Product.findByIdAndUpdate(productId, {
+    $addToSet: { usersFavorited: req.user._id },
+  })
     .then(() => {
-      return User.findByIdAndUpdate(req.body.userId, {
-        $push: { favorites: productId },
+      return User.findByIdAndUpdate(req.user._id, {
+        $addToSet: { favorites: productId },
       });
     })
     .then(() => res.sendStatus(204))
