@@ -64,8 +64,14 @@ router.patch("/products/:id", requireToken, (req, res, next) => {
 // Delete product by Id
 router.delete("/products/:id", requireToken, (req, res, next) => {
   const productId = req.params.id;
-  Product.findByIdAndDelete(productId)
+  Product.findById(productId)
     .then(handle404)
+    .then((product) => {
+      Store.findById(product.storeId.toString())
+        .then((store) => requireOwnership(req, store))
+        .then(() => product.delete(productId))
+        .catch(next);
+    })
     .then(res.sendStatus(204))
     .catch(next);
 });
