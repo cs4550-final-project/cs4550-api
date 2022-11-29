@@ -2,9 +2,9 @@ const express = require("express");
 const passport = require("passport");
 const Product = require("../models/product");
 const User = require("../models/user");
+const Store = require("../models/store");
 
 const customErrors = require("../../lib/custom_errors");
-const store = require("../models/store");
 const handle404 = customErrors.handle404;
 const requireOwnership = customErrors.requireOwnership;
 const requireToken = passport.authenticate("bearer", { session: false });
@@ -32,9 +32,15 @@ router.get("/products/:id", (req, res, next) => {
 // POST /products
 // Create a product
 router.post("/products", requireToken, (req, res, next) => {
-  Product.create(req.body)
-    .then((product) => product.toObject())
-    .then((product) => res.status(201).json({ product }))
+  Store.findById(req.body.storeId)
+    .then(handle404)
+    .then((store) => requireOwnership(req, store.toObject()))
+    .then(() => {
+      Product.create(req.body)
+        .then((product) => product.toObject())
+        .then((product) => res.status(201).json({ product }))
+        .catch(next);
+    })
     .catch(next);
 });
 
@@ -42,18 +48,23 @@ router.post("/products", requireToken, (req, res, next) => {
 // Update product
 // send current userId in params and check if product's store's owner is the same
 router.patch("/products/:id", requireToken, (req, res, next) => {
-  //   const productId = req.params.id;
-  //   Product.findById(productId).then((product) => {
-  //     const store = store.findById(product.storeId);
-  //     requireOwnership(req, store);
-  //   });
+  const productId = req.params.id;
+  Product.findById(productId)
+    .then((product) => {
+      Store.findById(product.storeId.toString())
+        .then((store) => requireOwnership(req, store))
+        .then(() => product.update(req.body))
+        .catch(next);
+    })
+    .then(() => res.sendStatus(204))
+    .catch(next);
 });
 
 // DELETE /products/:id
 // Delete product by Id
 router.delete("/products/:id", requireToken, (req, res, next) => {
   const productId = req.params.id;
-  Product.findOneAndDelete(productId)
+  Product.findByIdAndDelete(productId)
     .then(handle404)
     .then(res.sendStatus(204))
     .catch(next);
