@@ -7,7 +7,7 @@ const userProductReviewSchema = new mongoose.Schema(
       ref: "Product",
       required: true,
     },
-    userId: {
+    ownerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
