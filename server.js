@@ -6,10 +6,11 @@ const cors = require("cors");
 const userRoutes = require("./app/routes/user_routes");
 const storeRoutes = require("./app/routes/store_routes");
 const productRoutes = require("./app/routes/product_routes");
-const userProductReviewRoutes = require("./app/routes/user_product_review_routes")
+const userProductReviewRoutes = require("./app/routes/user_product_review_routes");
+const cartRoutes = require("./app/routes/cart_routes");
 
 // require auth
-const auth = require("./lib/auth"); 
+const auth = require("./lib/auth");
 // require database configuration logic
 // `db` will be the actual Mongo URI as a string
 const db = require("./config/db");
@@ -45,12 +46,12 @@ app.use((req, res, next) => {
   }
   next();
 });
-console.log(db)
 
 app.use(userRoutes);
 app.use(storeRoutes);
 app.use(productRoutes);
 app.use(userProductReviewRoutes);
+app.use(cartRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the api.");

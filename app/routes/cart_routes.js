@@ -18,8 +18,8 @@ router.get("/carts", (req, res, next) => {
 
 // GET /cart
 // Get store information
-router.get("/cart", requireToken, requireOwnership, (req, res, next) => {
-  Cart.find({ ownerId: req.user._id })
+router.get("/cart", requireToken, (req, res, next) => {
+  Cart.findOne({ ownerId: req.user._id })
     .then(handle404)
     .then((cart) => cart.toObject())
     .then((cart) => res.json({ cart }))
@@ -28,7 +28,7 @@ router.get("/cart", requireToken, requireOwnership, (req, res, next) => {
 
 // POST /cart
 // Create a cart
-router.post("/cart", (req, res, next) => {
+router.post("/carts", (req, res, next) => {
   Cart.create(req.body)
     .then((cart) => cart.toObject())
     .then((cart) => res.status(201).json({ cart }))
@@ -37,10 +37,12 @@ router.post("/cart", (req, res, next) => {
 
 // DELETE /cart
 // Delete a cart
-router.delete("/cart", requireToken, (req, res, next) => {
+router.delete("/carts", requireToken, (req, res, next) => {
   Cart.find({ ownerId: req.user._id })
     .then(handle404)
     .then((cart) => cart.delete(cart._id))
     .then(() => res.sendStatus(204))
     .catch(next);
 });
+
+module.exports = router;
