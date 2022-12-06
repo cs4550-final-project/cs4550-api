@@ -44,11 +44,11 @@ router.post("/sign-up", (req, res, next) => {
     .then(() => bcrypt.hash(req.body.credentials.password, bcryptSaltRounds))
     .then((hash) => {
       return {
-        email: req.body.credentials.email,
+        username: req.body.credentials.username,
         hashedPassword: hash,
       };
     })
-    // create user with provided email and hashed password
+    // create user with provided username and hashed password
     .then((user) => User.create(user))
     // send the new user object back with status 201, but `hashedPassword`
     // won't be send because of the `transform` in the User model
@@ -62,7 +62,7 @@ router.post("/sign-in", (req, res, next) => {
   const pw = req.body.credentials.password;
   let user;
 
-  User.findOne({ email: req.body.credentials.email })
+  User.findOne({ username: req.body.credentials.username })
     .then((record) => {
       if (!record) {
         throw new BadCredentialsError();
