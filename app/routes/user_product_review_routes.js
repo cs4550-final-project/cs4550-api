@@ -15,6 +15,7 @@ const router = express.Router();
 router.get("/products/:productId/reviews", (req, res, next) => {
   const productId = req.params.productId;
   UserProductReview.find({ product: productId })
+    .populate("owner", "username")
     .then(handle404)
     .then((reviews) => reviews.map((review) => review.toObject()))
     .then((reviews) => res.json({ reviews }))
