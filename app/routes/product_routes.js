@@ -24,6 +24,8 @@ router.get("/products", (req, res, next) => {
 router.get("/products/:id", (req, res, next) => {
   const productId = req.params.id;
   Product.findById(productId)
+    .populate("storeId")
+    .then(handle404)
     .then((product) => product.toObject())
     .then((product) => res.json({ product }))
     .catch(next);
