@@ -39,7 +39,7 @@ router.get("/store/:id/products", (req, res, next) => {
 // POST /store
 // Create a store
 router.post("/store", requireToken, (req, res, next) => {
-  const payload = { ownerId: req.user._id, ...req.body };
+  const payload = { owner: req.user._id, ...req.body };
   Store.create(payload)
     .then((store) => store.toObject())
     .then((store) => res.status(201).json({ store }))

@@ -19,7 +19,7 @@ router.get("/carts", (req, res, next) => {
 // GET /cart
 // Get store information
 router.get("/cart", requireToken, (req, res, next) => {
-  Cart.findOne({ ownerId: req.user._id })
+  Cart.findOne({ owner: req.user._id })
     .then(handle404)
     .then((cart) => cart.toObject())
     .then((cart) => res.json({ cart }))
@@ -38,7 +38,7 @@ router.post("/carts", (req, res, next) => {
 // DELETE /cart
 // Delete a cart
 router.delete("/carts", requireToken, (req, res, next) => {
-  Cart.find({ ownerId: req.user._id })
+  Cart.find({ owner: req.user._id })
     .then(handle404)
     .then((cart) => cart.delete(cart._id))
     .then(() => res.sendStatus(204))

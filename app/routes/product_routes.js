@@ -24,7 +24,7 @@ router.get("/products", (req, res, next) => {
 router.get("/products/:id", (req, res, next) => {
   const productId = req.params.id;
   Product.findById(productId)
-    .populate("storeId")
+    .populate("store")
     .then(handle404)
     .then((product) => product.toObject())
     .then((product) => res.json({ product }))
@@ -34,7 +34,7 @@ router.get("/products/:id", (req, res, next) => {
 // POST /products
 // Create a product
 router.post("/products", requireToken, (req, res, next) => {
-  Store.findById(req.body.storeId)
+  Store.findById(req.body.store)
     .then(handle404)
     .then((store) => requireOwnership(req, store.toObject()))
     .then(() => {
@@ -53,7 +53,7 @@ router.patch("/products/:id", requireToken, (req, res, next) => {
   const productId = req.params.id;
   Product.findById(productId)
     .then((product) => {
-      Store.findById(product.storeId.toString())
+      Store.findById(product.store.toString())
         .then((store) => requireOwnership(req, store))
         .then(() => product.update(req.body))
         .catch(next);
@@ -69,7 +69,7 @@ router.delete("/products/:id", requireToken, (req, res, next) => {
   Product.findById(productId)
     .then(handle404)
     .then((product) => {
-      Store.findById(product.storeId.toString())
+      Store.findById(product.store.toString())
         .then((store) => requireOwnership(req, store))
         .then(() => product.delete(productId))
         .catch(next);
