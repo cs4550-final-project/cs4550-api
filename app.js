@@ -3,17 +3,17 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 // require routes
-const userRoutes = require("./routes/user_routes");
-const storeRoutes = require("./routes/store_routes");
-const productRoutes = require("./routes/product_routes");
-const userProductReviewRoutes = require("./routes/user_product_review_routes");
-const cartRoutes = require("./routes/cart_routes");
+const userRoutes = require("./app/routes/user_routes");
+const storeRoutes = require("./app/routes/store_routes");
+const productRoutes = require("./app/routes/product_routes");
+const userProductReviewRoutes = require("./app/routes/user_product_review_routes");
+const cartRoutes = require("./app/routes/cart_routes");
 
 // require auth
-const auth = require("../lib/auth");
+const auth = require("./lib/auth");
 // require database configuration logic
 // `db` will be the actual Mongo URI as a string
-const db = require("../config/db");
+const db = require("./config/db");
 
 // establish mongoDB connection
 const mongoose = require("mongoose");
