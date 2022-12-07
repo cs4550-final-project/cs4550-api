@@ -3,17 +3,14 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 // require routes
 const userRoutes = require("./app/routes/user_routes");
-const storeRoutes = require("./app/routes/store_routes");
-const productRoutes = require("./app/routes/product_routes");
-const userProductReviewRoutes = require("./app/routes/user_product_review_routes");
-const cartRoutes = require("./app/routes/cart_routes");
+const userRecipeReviewRoutes = require("./app/routes/user_recipe_review_routes");
 
 // require auth
 const auth = require("./lib/auth");
 // require database configuration logic
 // `db` will be the actual Mongo URI as a string
 const db = require("./config/db");
-
+console.log(db);
 // establish mongoDB connection
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
@@ -29,6 +26,7 @@ const port = process.env.PORT || 3000;
 // set CORS headers on response from this API using the `cors` NPM package
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:3000" }));
+
 app.use(bodyParser.json());
 // register passport authentication middleware
 app.use(auth);
@@ -47,10 +45,7 @@ app.use((req, res, next) => {
 });
 
 app.use(userRoutes);
-app.use(storeRoutes);
-app.use(productRoutes);
-app.use(userProductReviewRoutes);
-app.use(cartRoutes);
+app.use(userRecipeReviewRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the api.");

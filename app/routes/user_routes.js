@@ -30,22 +30,23 @@ router.get("/users", (req, res, next) => {
 // POST /sign-up
 // Sign up and create a user
 router.post("/sign-up", (req, res, next) => {
-  Promise.resolve(req.body.credentials)
-    .then((credentials) => {
+  Promise.resolve(req.body.user)
+    .then((user) => {
       if (
-        !credentials ||
-        !credentials.password ||
-        credentials.password !== credentials.password_confirmation
+        !user ||
+        !user.password ||
+        user.password !== user.password_confirmation
       ) {
         throw new BadParamsError();
       }
     })
     // generate a hash from the provided password, returning a promise
-    .then(() => bcrypt.hash(req.body.credentials.password, bcryptSaltRounds))
+    .then(() => bcrypt.hash(req.body.user.password, bcryptSaltRounds))
     .then((hash) => {
       return {
-        username: req.body.credentials.username,
+        username: req.body.user.username,
         hashedPassword: hash,
+        role: req.body.user.role,
       };
     })
     // create user with provided username and hashed password
@@ -59,10 +60,10 @@ router.post("/sign-up", (req, res, next) => {
 // POST /sign-in
 // sign in
 router.post("/sign-in", (req, res, next) => {
-  const pw = req.body.credentials.password;
+  const pw = req.body.user.password;
   let user;
 
-  User.findOne({ username: req.body.credentials.username })
+  User.findOne({ username: req.body.user.username })
     .then((record) => {
       if (!record) {
         throw new BadCredentialsError();
@@ -122,6 +123,30 @@ router.delete("/sign-out", requireToken, (req, res, next) => {
   req.user.token = crypto.randomBytes(16);
   req.user
     .save()
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
+
+// GET /users/:id
+// Get user by Id
+router.get("/users/:id", (req, res, next) => {
+  const id = req.params.id;
+  User.findById(id)
+    .then(handle404)
+    .then((user) => user.toObject())
+    .then((users) => res.json({ users }))
+    .catch(next);
+});
+
+// PATCH /favorites
+// update favorites
+router.patch("/favorites", requireToken, (req, res, next) => {
+  User.findById(req.user._id)
+    .then(handle404)
+    .then((user) => {
+      user.favorites = req.body.favorites;
+      return user.save();
+    })
     .then(() => res.sendStatus(204))
     .catch(next);
 });

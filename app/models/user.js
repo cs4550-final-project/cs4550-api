@@ -13,8 +13,18 @@ const userSchema = new mongoose.Schema(
     },
     favorites: [
       {
+        type: String,
+      },
+    ],
+    role: {
+      type: String,
+      enum: ["user", "critic"],
+      default: "user",
+    },
+    following: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
+        ref: "User",
       },
     ],
     token: String,

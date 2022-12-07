@@ -16,6 +16,7 @@
 // Environment variable MONGODB_URI will be available in
 // heroku production evironment otherwise use test or development db
 const currentDb =
-  process.env.MONGODB_URI || `mongodb://localhost:27017/cs4550-api-development`;
+  process.env.MONGODB_URI ||
+  "mongodb+srv://britney:pG48axLd8KG9DUIo@cluster0.fsp3xa1.mongodb.net/test?retryWrites=true&w=majority";
 
 module.exports = currentDb;
