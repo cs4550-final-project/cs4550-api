@@ -44,6 +44,7 @@ router.post("/reviews", requireToken, (req, res, next) => {
 // delete a review
 // requireOwnership
 router.delete("/reviews/:id", requireToken, (req, res, next) => {
+  requireRole(req.user, "critic");
   const reviewId = req.params.id;
   UserRecipeReview.findById(reviewId)
     .then(handle404)
