@@ -28,7 +28,8 @@ const port = process.env.PORT || 3000;
 
 // set CORS headers on response from this API using the `cors` NPM package
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:3000" }));
+app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:4000" }));
+console.log(process.env.CLIENT_ORIGIN) 
 app.use(bodyParser.json());
 // register passport authentication middleware
 app.use(auth);
