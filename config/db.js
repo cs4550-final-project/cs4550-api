@@ -1,5 +1,6 @@
 "use strict";
-require("dotenv").config();
+// require("dotenv").config();
+require("./dotenv").config();
 
 // // creating a base name for the mongodb
 // const mongooseBaseName = "cs4550-api";
