@@ -134,7 +134,7 @@ router.get("/users/:id", (req, res, next) => {
   User.findById(id)
     .then(handle404)
     .then((user) => user.toObject())
-    .then((users) => res.json({ users }))
+    .then((user) => res.json({ user }))
     .catch(next);
 });
 
