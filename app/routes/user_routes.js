@@ -30,6 +30,7 @@ router.get("/users", (req, res, next) => {
 // POST /sign-up
 // Sign up and create a user
 router.post("/sign-up", (req, res, next) => {
+  console.log(req.body);
   Promise.resolve(req.body.user)
     .then((user) => {
       if (
@@ -43,11 +44,13 @@ router.post("/sign-up", (req, res, next) => {
     // generate a hash from the provided password, returning a promise
     .then(() => bcrypt.hash(req.body.user.password, bcryptSaltRounds))
     .then((hash) => {
-      return {
-        username: req.body.user.username,
+      const newUser = {
+        ...req.body.user,
         hashedPassword: hash,
-        role: req.body.user.role,
       };
+      delete newUser.password;
+      delete newUser.password_confirmation;
+      return newUser;
     })
     // create user with provided username and hashed password
     .then((user) => User.create(user))
