@@ -21,6 +21,9 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "critic"],
       default: "user",
     },
+    bio: {
+      type: String,
+    },
     following: [
       {
         type: mongoose.Schema.Types.ObjectId,
