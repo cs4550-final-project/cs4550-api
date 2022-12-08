@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
     },
     favorites: [
       {
-        type: String,
+        type: Number,
       },
     ],
     role: {
