@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
     },
     favorites: [
       {
-        type: String,
+        type: Number,
       },
     ],
     role: {
@@ -22,6 +22,9 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
     bio: {
+      type: String,
+    },
+    company: {
       type: String,
     },
     following: [
