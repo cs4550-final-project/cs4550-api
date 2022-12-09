@@ -154,4 +154,18 @@ router.patch("/favorites", requireToken, (req, res, next) => {
     .catch(next);
 });
 
+// Patch /update-info
+// update user info
+router.patch("/update-info", requireToken, (req, res, next) => {
+  User.findById(req.user._id)
+    .then(handle404)
+    .then((user) => {
+      const payload = req.body;
+      user.bio = payload.bio;
+      return user.save();
+    })
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
+
 module.exports = router;
