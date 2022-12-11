@@ -154,6 +154,30 @@ router.patch("/favorites", requireToken, (req, res, next) => {
     .catch(next);
 });
 
+// GET /following
+// get all users being followed
+router.get("/users/:id/following", (req, res, next) => {
+  const id = req.params.id;
+  User.findById(id)
+    .then(handle404)
+    .then((users) => users.map((u) => u.toObject()))
+    .then((users) => res.json({ users }))
+    .catch(next);
+});
+
+// PATCH /following
+// update the list of followed users
+router.patch("/following", requireToken, (req, res, next) => {
+  User.findById(req.user._id)
+    .then(handle404)
+    .then((user) => {
+      user.favorites = req.body.following;
+      return user.save();
+    })
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
+
 // Patch /update-info
 // update user info
 router.patch("/update-info", requireToken, (req, res, next) => {
