@@ -1,8 +1,8 @@
 const express = require("express");
 const passport = require("passport");
-const Cart = require("../models/cart");
+const Cart = require("../../models/deprecate/cart");
 const Product = require("../models/product");
-const customErrors = require("../../lib/custom_errors");
+const customErrors = require("../../../lib/custom_errors");
 const handle404 = customErrors.handle404;
 const requireOwnership = customErrors.requireOwnership;
 const requireToken = passport.authenticate("bearer", { session: false });

@@ -30,7 +30,6 @@ router.get("/users", (req, res, next) => {
 // POST /sign-up
 // Sign up and create a user
 router.post("/sign-up", (req, res, next) => {
-  console.log(req.body);
   Promise.resolve(req.body.user)
     .then((user) => {
       if (
@@ -67,6 +66,7 @@ router.post("/sign-in", (req, res, next) => {
   let user;
 
   User.findOne({ username: req.body.user.username })
+    .populate("following")
     .then((record) => {
       if (!record) {
         throw new BadCredentialsError();
@@ -135,6 +135,7 @@ router.delete("/sign-out", requireToken, (req, res, next) => {
 router.get("/users/:id", (req, res, next) => {
   const id = req.params.id;
   User.findById(id)
+    .populate("following")
     .then(handle404)
     .then((user) => user.toObject())
     .then((user) => res.json({ user }))
