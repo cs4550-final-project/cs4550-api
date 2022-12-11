@@ -171,7 +171,7 @@ router.patch("/following", requireToken, (req, res, next) => {
   User.findById(req.user._id)
     .then(handle404)
     .then((user) => {
-      user.favorites = req.body.following;
+      user.following = req.body.following;
       return user.save();
     })
     .then(() => res.sendStatus(204))
