@@ -29,6 +29,18 @@ router.get("/:id/reviews", (req, res, next) => {
     .catch(next);
 });
 
+// Get recipes/:id/reviews
+// Get all reviews for recipe
+router.get("/recipes/:id/reviews", (req, res, next) => {
+  const recipeId = req.params.id;
+  console.log("recipeId", recipeId);
+  UserRecipeReview.find({ recipe: recipeId })
+    .then(handle404)
+    .then((reviews) => reviews.map((review) => review.toObject()))
+    .then((reviews) => res.json({ reviews }))
+    .catch(next);
+});
+
 // POST /
 // Create a review
 router.post("/reviews", requireToken, (req, res, next) => {
