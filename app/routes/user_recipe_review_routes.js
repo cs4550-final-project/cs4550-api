@@ -33,7 +33,6 @@ router.get("/:id/reviews", (req, res, next) => {
 // Get all reviews for recipe
 router.get("/recipes/:id/reviews", (req, res, next) => {
   const recipeId = req.params.id;
-  console.log("recipeId", recipeId);
   UserRecipeReview.find({ recipe: recipeId })
     .then(handle404)
     .then((reviews) => reviews.map((review) => review.toObject()))
